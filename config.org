@@ -1,0 +1,71 @@
+#+TITLE: Emacs Configuration
+#+AUTHOR: una persona de la costa de oro
+#+STARTUP: overview
+
+*The configuration requires the following code inside init.el in order to work:*
+
+=(org-babel-load-file ".../config.org")=
+
+* Basics
+
+#+begin_src emacs-lisp
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (global-display-line-numbers-mode 1)
+  (setq display-line-numbers-type 'relative)
+  (setq inhibit-startup-screen t)
+  (setq history-length 10)
+  (savehist-mode 1)
+  (global-auto-revert-mode 1)
+#+end_src
+
+* Package Manager
+
+#+begin_src emacs-lisp
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+	 (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+	(bootstrap-version 6))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+	  (url-retrieve-synchronously
+	   "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+	   'silent 'inhibit-cookies)
+	(goto-char (point-max))
+	(eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+#+end_src
+
+* Packages
+
+#+begin_src emacs-lisp
+  (straight-use-package 'modus-themes)
+  (straight-use-package 'org-bullets)
+#+end_src
+
+** org-bullets config
+
+#+begin_src emacs-lisp
+  (require 'org-bullets)
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+end_src
+
+* Modus themes
+
+#+begin_src emacs-lisp
+
+  (require-theme 'modus-themes)
+  (setq modus-vivendi-palette-overrides
+	 '(
+	   (bg-main "#2d2d2d")
+	   (bg-inactive bg-main)
+	   (bg-active bg-main)
+	   (bg-dim bg-main)
+	   (border-mode-line-active bg-mode-line-active)
+	   (bg-mode-line-inactive bg-tab-bar)
+	   (border-mode-line-inactive bg-mode-line-inactive)
+	   ))
+   (load-theme 'modus-vivendi t)
+
+#+end_src
+
